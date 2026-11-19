@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111713">
+<title>Мой новый день</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#111713;color:#f4f1e9;font-family:Arial,sans-serif;padding:22px}
+header{padding:18px 0}
+h1{font-size:28px;margin:0;color:#e2c47c}
+p{color:#b9c0b8;line-height:1.5}
+h2{font-size:21px}
+.card{background:#20352a;border:1px solid #3c5141;border-radius:16px;padding:18px;margin:14px 0}
+button{background:#c9a95e;color:#171711;border:0;border-radius:10px;padding:12px;font-weight:bold;cursor:pointer}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0}
+nav button{background:#29342d;color:#eee;padding:12px 5px}
+nav button.active{background:#c9a95e;color:#171711}
+.task{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #435044}
+input[type=checkbox]{width:20px;height:20px;accent-color:#c9a95e}
+section{display:none}
+section.active{display:block}
+.small{font-size:13px;color:#b9c0b8}
+</style>
+</head>
+<body>
+<header>
+<p>ТВОЙ ПУТЬ К ЛУЧШЕЙ ВЕРСИИ СЕБЯ</p>
+<h1>Мой новый день</h1>
+<p>Не обещай. Делай. Каждый день понемногу.</p>
+</header>
+
+<nav>
+<button class="active" onclick="showTab('today',this)">Сегодня</button>
+<button onclick="showTab('quran',this)">Коран</button>
+<button onclick="showTab('books',this)">Книги</button>
+<button onclick="showTab('body',this)">Тело</button>
+<button onclick="showTab('progress',this)">Прогресс</button>
+</nav>
+
+<section id="today" class="active">
+<div class="card">
+<h2>Твой день начинается сейчас</h2>
+<p>Выполни обещанное самому себе.</p>
+<div id="tasks">
+<label class="task"><input type="checkbox"> Повторить выученные аяты</label>
+<label class="task"><input type="checkbox"> Почитать книгу 10 минут</label>
+<label class="task"><input type="checkbox"> Сделать зарядку</label>
+<label class="task"><input type="checkbox"> Подвести итоги дня</label>
+</div>
+<p id="count">Выполнено: 0 из 4</p>
+</div>
+</section>
+
+<section id="quran">
+<div class="card">
+<h2>Мой Коран</h2>
+<p>Цель: учить столько аятов, сколько позволяет их сложность.</p>
+<p>Текущий маршрут: короткие суры 30-го джуза.</p>
+<p>Первый урок: сура Аль-Ихляс.</p>
+<p class="small">Слушай проверенное чтение, повторяй и сверяй произношение с учителем.</p>
+<a href="https://quran.com/al-ikhlas" style="color:#e2c47c">Открыть Коран и аудио</a>
+</div>
+</section>
+
+<section id="books">
+<div class="card">
+<h2>Мои книги</h2>
+<p>Начни с 5 страниц в день.</p>
+<p>Главное — выработать привычку читать.</p>
+</div>
+</section>
+
+<section id="body">
+<div class="card">
+<h2>Моё тело</h2>
+<p>Начни с малого: 10 минут движения каждый день.</p>
+<p>Зарядка · Ходьба · Сон · Тренировки</p>
+</div>
+</section>
+
+<section id="progress">
+<div class="card">
+<h2>Мой прогресс</h2>
+<p>Каждый выполненный шаг имеет значение.</p>
+<p id="summary">Сегодня выполнено 0 задач.</p>
+</div>
+</section>
+
+<script>
+function showTab(id,button){
+document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+button.classList.add('active');
+}
+const checks=[...document.querySelectorAll('#tasks input')];
+function update(){
+let n=checks.filter(c=>c.checked).length;
+document.getElementById('count').textContent='Выполнено: '+n+' из 4';
+document.getElementById('summary').textContent='Сегодня выполнено '+n+' задач.';
+localStorage.setItem('tasks',JSON.stringify(checks.map(c=>c.checked)));
+}
+checks.forEach((c,i)=>{
+c.checked=JSON.parse(localStorage.getItem('tasks')||'[false,false,false,false]')[i];
+c.addEventListener('change',update);
+});
+update();
+</script>
+</body>
+</html>
